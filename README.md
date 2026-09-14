@@ -1,1 +1,1 @@
-# Quick_GithuActions_Learning
+# Quick_GithubActions_Learning
