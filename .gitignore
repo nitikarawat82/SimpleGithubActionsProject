@@ -1,0 +1,14 @@
+#.gitignore is a file that tells Git which files and folders it should not track or upload to GitHub.
+# Python cache files
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.venv/
+
+# Environment variables
+.env
+
+# VS Code local settings
+.vscode/

@@ -1,0 +1,75 @@
+<!-- HTML5 document -->
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <!-- Character encoding -->
+    <meta charset="UTF-8">
+
+    <!-- Responsive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Dynamic movie title in browser tab -->
+    <title>{{ movie.title }} - CineVault</title>
+
+    <!-- Connect CSS file -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+
+        <!-- Website logo -->
+        <div class="logo">🎬 CineVault</div>
+
+        <!-- Navigation links -->
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="#">Movies</a>
+            <a href="#">Genres</a>
+        </div>
+
+    </nav>
+
+
+    <!-- Movie Details Section -->
+    <section class="movie-details">
+
+        <!-- Movie poster -->
+        <img src="{{ movie.image }}"
+             alt="{{ movie.title }}">
+
+        <!-- Movie information -->
+        <div class="movie-details-info">
+
+            <!-- Movie title -->
+            <h1>{{ movie.title }}</h1>
+
+            <!-- Movie year and genre -->
+            <p>{{ movie.year }} • {{ movie.genre }}</p>
+
+            <!-- Movie rating -->
+            <p>⭐ {{ movie.rating }}/10</p>
+
+            <!-- Movie description -->
+            <p>{{ movie.description }}</p>
+
+            <!-- Watch button -->
+            <button>▶ Watch Now</button>
+
+            <!-- Back to homepage -->
+            <a href="/">← Back to Home</a>
+
+        </div>
+
+    </section>
+
+</body>
+
+</html>

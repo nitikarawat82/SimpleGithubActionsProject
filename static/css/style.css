@@ -1,0 +1,275 @@
+/* Remove default browser spacing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* Main page styling */
+body {
+    font-family: Arial, sans-serif;
+    background: #0b0b0b;
+    color: white;
+}
+
+
+/* Navigation bar */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 50px;
+    background: #111111;
+}
+
+
+/* CineVault logo */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+/* Navigation links container */
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+
+/* Navigation links */
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+
+/* Search input */
+.search-box input {
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    width: 220px;
+}
+
+
+/* Hero section */
+.hero {
+    min-height: 450px;
+    display: flex;
+    align-items: center;
+    padding: 60px;
+    background:
+        linear-gradient(to right, #0b0b0b 20%, transparent),
+        url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba")
+        center / cover;
+}
+
+
+/* Hero content */
+.hero-content {
+    max-width: 500px;
+}
+
+
+/* Hero heading */
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+
+/* Hero description */
+.hero p {
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+
+/* Watch button */
+.hero button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    background: #e50914;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+/* Movie section */
+.movie-section {
+    padding: 40px 50px;
+}
+
+
+/* Section heading */
+.movie-section h2 {
+    margin-bottom: 25px;
+}
+
+
+/* Movie grid */
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 25px;
+}
+
+
+/* Individual movie card */
+.movie-card {
+    background: #181818;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+
+/* Card hover effect */
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+
+/* Movie poster */
+.movie-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+
+/* Movie information */
+.movie-info {
+    padding: 15px;
+}
+
+
+/* Movie title */
+.movie-info h3 {
+    margin-bottom: 8px;
+}
+
+
+/* Movie metadata */
+.movie-info p {
+    color: #aaaaaa;
+    margin-bottom: 8px;
+}
+
+
+/* Movie rating */
+.movie-info span {
+    display: block;
+    margin-bottom: 10px;
+}
+
+
+/* Details link */
+.movie-info a {
+    color: #e50914;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+    }
+
+    .hero {
+        padding: 40px 20px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .movie-section {
+        padding: 30px 20px;
+    }
+}
+
+/* Movie details page */
+.movie-details {
+    display: flex;
+    gap: 40px;
+    padding: 60px;
+    max-width: 1100px;
+    margin: auto;
+}
+
+
+/* Movie poster on details page */
+.movie-details img {
+    width: 300px;
+    border-radius: 10px;
+}
+
+
+/* Movie information */
+.movie-details-info {
+    max-width: 600px;
+}
+
+
+/* Movie details heading */
+.movie-details-info h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+
+/* Movie details text */
+.movie-details-info p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+
+/* Watch button */
+.movie-details-info button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    background: #e50914;
+    color: white;
+    cursor: pointer;
+    margin: 10px 15px 10px 0;
+}
+
+
+/* Back link */
+.movie-details-info a {
+    color: white;
+    text-decoration: none;
+}
+
+
+/* Responsive movie details */
+@media (max-width: 768px) {
+
+    .movie-details {
+        flex-direction: column;
+        padding: 30px 20px;
+    }
+
+    .movie-details img {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .movie-details-info h1 {
+        font-size: 32px;
+    }
+}

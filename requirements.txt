@@ -1,0 +1,4 @@
+# Flask web framework used to build the CineVault backend
+
+Flask==3.1.2
+

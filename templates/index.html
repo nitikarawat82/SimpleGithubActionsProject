@@ -1,0 +1,109 @@
+<!-- Tells the browser that this is an HTML5 document -->
+<!DOCTYPE html>
+
+<!-- Root element of our webpage -->
+<html lang="en">
+
+<head>
+
+    <!-- Supports special characters -->
+    <meta charset="UTF-8">
+
+    <!-- Makes the website responsive on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title shown in the browser tab -->
+    <title>CineVault - Movie Streaming</title>
+
+    <!-- Connect our CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+
+        <!-- Website Logo / Name -->
+        <div class="logo">🎬 CineVault</div>
+
+        <!-- Navigation Links -->
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="#">Movies</a>
+            <a href="#">Genres</a>
+        </div>
+
+        <!-- Search Box -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search movies...">
+        </div>
+
+    </nav>
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <!-- Main heading -->
+            <h1>WATCH. DISCOVER. ENJOY.</h1>
+
+            <!-- Short description -->
+            <p>Discover your next favorite movie with CineVault.</p>
+
+            <!-- Action button -->
+            <button>▶ Watch Now</button>
+
+        </div>
+
+    </section>
+
+
+    <!-- Trending Movies Section -->
+    <section class="movie-section">
+
+        <h2>🔥 Trending Now</h2>
+
+        <!-- Movie cards will be generated from Python data -->
+        <div class="movie-grid">
+
+            {% for movie in movies %}
+
+            <!-- Individual movie card -->
+            <div class="movie-card">
+
+                <!-- Movie poster -->
+                <img src="{{ movie.image }}" alt="{{ movie.title }}">
+
+                <!-- Movie information -->
+                <div class="movie-info">
+
+                    <h3>{{ movie.title }}</h3>
+
+                    <p>{{ movie.genre }} • {{ movie.year }}</p>
+
+                    <span>⭐ {{ movie.rating }}</span>
+
+                    <!-- Link to movie details page -->
+                    <a href="/movie/{{ movie.id }}">View Details</a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <!-- Connect JavaScript -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>
