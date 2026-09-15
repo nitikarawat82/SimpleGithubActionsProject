@@ -1,0 +1,42 @@
+# GitHub Actions workflow name
+name: CineVault CI
+
+# Run the workflow when code is pushed or a pull request is created
+on:
+  push:
+    branches: [main]
+
+  pull_request:
+    branches: [main]
+
+
+# Define the jobs for this workflow
+jobs:
+
+  # Testing job
+  test:
+
+    # Use the latest Ubuntu runner provided by GitHub
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Install project dependencies and pytest
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
+
+      # Run automated tests
+      - name: Run tests
+        run: pytest

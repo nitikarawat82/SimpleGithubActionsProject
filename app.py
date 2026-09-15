@@ -44,4 +44,5 @@ if __name__ == "__main__":
 
     # Start the Flask development server
     # debug=True automatically reloads the server when we change code
-    app.run(debug=True)
+    # using this command website will run not only on your laptop but also will run on available networks, devices with the same wifi can access this website 
+    app.run(host="0.0.0.0", port=5000, debug=True)
