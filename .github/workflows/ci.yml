@@ -64,5 +64,5 @@ jobs:
       # Push Docker image to ECR
       - name: Push Docker image
         run: |
-          docker tag cinevault:latest ${{ secrets.ECR_IMAGE }}
-          docker push ${{ secrets.ECR_IMAGE }}
+          docker tag cinevault:latest ${{ secrets.ECRIMAGE }}
+          docker push ${{ secrets.ECRIMAGE }}
