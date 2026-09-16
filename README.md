@@ -498,54 +498,119 @@ The application is then available through the EC2 public IP.
 
 ---
 
-# 🔄 Complete CI/CD Flow
+# 🔄 🚀 CineVault — Complete DevOps CI/CD Flow
 
 ```text
-                 👩‍💻 Developer
-                      │
-                  git push
-                      ↓
-                 🐙 GitHub
-                      │
-                      ↓
-             ⚙️ GitHub Actions
-                      │
-                      ↓
-                 🧪 Pytest
-                      │
-                 Tests Pass
-                      │
-                      ↓
-                🐳 Docker Build
-                      │
-                      ↓
-                 🔐 ECR Login
-                      │
-                      ↓
-                📦 Docker Push
-                      │
-                      ↓
-                ☁️ Amazon ECR
-                      │
-                      ↓
-                AWS SSM Command
-                      │
-                      ↓
-                   ☁️ EC2
-                      │
-               Docker Login
-                      │
-                      ↓
-                 Docker Pull
-                      │
-                      ↓
-              Remove Old Container
-                      │
-                      ↓
-               Run New Container
-                      │
-                      ↓
-                 🌐 CineVault
+                          👩‍💻 DEVELOPER
+                              │
+                              │ Code Change
+                              ▼
+                    ┌───────────────────┐
+                    │   Local Project   │
+                    │   Flask + HTML    │
+                    │   CSS + JS        │
+                    └─────────┬─────────┘
+                              │
+                       git add / commit
+                              │
+                       git push origin main
+                              ▼
+                    ┌───────────────────┐
+                    │      GitHub       │
+                    │  Source Repository│
+                    └─────────┬─────────┘
+                              │
+                       Push to main
+                              │
+                              ▼
+              ┌──────────────────────────────┐
+              │       GitHub Actions         │
+              │        CI/CD Pipeline        │
+              └──────────────┬───────────────┘
+                             │
+             ┌───────────────┴────────────────┐
+             │                                │
+             ▼                                ▼
+       🔍 CHECKOUT                         🐍 PYTEST
+       Repository                         Automated Tests
+             │                                │
+             └───────────────┬────────────────┘
+                             │
+                          Tests Pass
+                             │
+                             ▼
+                  🐳 Docker Build
+                             │
+                  docker build
+                             │
+                             ▼
+                 ┌────────────────────┐
+                 │   Docker Image     │
+                 │ cinevault:latest   │
+                 └──────────┬─────────┘
+                            │
+                         Tag Image
+                            │
+                            ▼
+                 ┌────────────────────┐
+                 │     AWS ECR        │
+                 │ Container Registry │
+                 │                    │
+                 │ cinevault:latest   │
+                 └──────────┬─────────┘
+                            │
+                      Image pushed
+                            │
+                            ▼
+                 📡 AWS SSM SendCommand
+                            │
+                            │ "Go to EC2
+                            │  and deploy"
+                            ▼
+                 ┌────────────────────┐
+                 │      AWS EC2       │
+                 │ Ubuntu Server      │
+                 └──────────┬─────────┘
+                            │
+                     EC2 IAM Role
+                            │
+                            ▼
+                 🔐 ECR Authentication
+                            │
+                 aws ecr get-login-password
+                            │
+                            ▼
+                    🐳 Docker Login
+                            │
+                            ▼
+                     docker pull
+                            │
+                            ▼
+                 ┌────────────────────┐
+                 │ Latest ECR Image   │
+                 │   on EC2           │
+                 └──────────┬─────────┘
+                            │
+                  docker run -d
+                            │
+                            ▼
+                 ┌────────────────────┐
+                 │ CineVault Container│
+                 │                    │
+                 │ Flask Application  │
+                 │ Port 5000          │
+                 └──────────┬─────────┘
+                            │
+                      Port Mapping
+                       5000 : 5000
+                            │
+                            ▼
+                    🌐 LIVE WEBSITE
+                            │
+                            ▼
+                 http://EC2-IP:5000
+
+
 ```
 
 <img width="1660" height="783" alt="Screenshot 2026-09-16 173955" src="https://github.com/user-attachments/assets/3529ad36-a03a-4ec3-a95c-b3729f6ebbb8" />
