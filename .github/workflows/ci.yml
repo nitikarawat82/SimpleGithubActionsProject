@@ -68,6 +68,7 @@ jobs:
           docker push ${{ secrets.ECRIMAGE }}
 
       # Deploy the latest Docker image to EC2 using AWS Systems Manager
+            # Deploy the latest Docker image to EC2 using AWS Systems Manager
       - name: Deploy to EC2
         env:
           ECR_IMAGE: ${{ secrets.ECR_IMAGE }}
