@@ -64,5 +64,22 @@ jobs:
       # Push Docker image to ECR
       - name: Push Docker image
         run: |
-          docker tag cinevault:latest ${{ secrets.ECR_IMAGE }}
-          docker push ${{ secrets.ECR_IMAGE }}
+          docker tag cinevault:latest ${{ secrets.ECRIMAGE }}
+          docker push ${{ secrets.ECRIMAGE }}
+
+      # Deploy the latest Docker image to EC2 using AWS Systems Manager
+      - name: Deploy to EC2
+        env:
+          ECR_IMAGE: ${{ secrets.ECR_IMAGE }}
+        run: |
+          aws ssm send-command \
+            --instance-ids "i-03243fc6132d734e3" \
+            --document-name "AWS-RunShellScript" \
+            --parameters "commands=[
+              \"docker pull $ECR_IMAGE\",
+              \"docker rm -f cinevault-container || true\",
+              \"docker run -d -p 5000:5000 --name cinevault-container $ECR_IMAGE\"
+            ]" \
+            --region us-east-1
+
+        
