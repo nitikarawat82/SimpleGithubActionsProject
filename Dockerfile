@@ -1,20 +1,20 @@
-# Python ki lightweight official image use kar rahe hain
+# Use the official lightweight Python image
 FROM python:3.12-slim
 
-# Container ke andar application ka working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Dependencies wali file container mein copy karo
+# Copy the dependencies file into the container
 COPY requirements.txt .
 
-# Python dependencies install karo
+# Install the Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Project ki baaki files container mein copy karo
+# Copy the rest of the application files into the container
 COPY . .
 
-# Flask application ka port expose karo
+# Expose the port used by the Flask application
 EXPOSE 5000
 
-# Container start hone par Flask application run karo
+# Start the Flask application when the container starts
 CMD ["python", "app.py"]
