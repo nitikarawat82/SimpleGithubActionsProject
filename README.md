@@ -260,7 +260,7 @@ Expected result:
 
 # 7️⃣ GitHub Actions CI/CD Pipeline
 
-GitHub Actions automates testing and Docker image building.
+GitHub Actions is used to automate the CineVault CI/CD workflow.
 
 The workflow is:
 
@@ -302,104 +302,35 @@ Run New Container
 
 Every push to `main` triggers the workflow.
 
-### 📝 Workflow Configuration
 
-```yaml
-# GitHub Actions workflow name
-name: CineVault CI
+The complete workflow configuration is available in the repository:
 
-# Run the workflow when code is pushed or a pull request is created
-on:
-  push:
-    branches: [main]
-
-  pull_request:
-    branches: [main]
-
-
-# Define the jobs for this workflow
-jobs:
-
-  # Testing job
-  test:
-
-    # Use the latest Ubuntu runner provided by GitHub
-    runs-on: ubuntu-latest
-
-    steps:
-
-      # Checkout the repository code
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      # Set up Python environment
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      # Install project dependencies and pytest
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install pytest
-
-      # Run automated tests
-      - name: Run tests
-        run: pytest
-
-      # Build the Docker image
-      - name: Build Docker image
-        run: docker build -t cinevault:latest .
-
-      # Configure AWS credentials
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      # Login to Amazon ECR
-      - name: Login to Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v2
-
-      # Push Docker image to ECR
-      - name: Push Docker image
-        run: |
-          docker tag cinevault:latest ${{ secrets.ECRIMAGE }}
-          docker push ${{ secrets.ECRIMAGE }}
-
-      # Verify that the ECR image secret is available
-      - name: Verify ECR Image Secret
-        env:
-          ECR_IMAGE: ${{ secrets.ECRIMAGE }}
-        run: |
-          if [ -z "$ECR_IMAGE" ]; then
-            echo "❌ ECR_IMAGE is EMPTY"
-            exit 1
-          else
-            echo "✅ ECR_IMAGE is available"
-          fi
-
-      # Deploy the latest Docker image to EC2 using AWS Systems Manager
-      - name: Deploy to EC2
-        env:
-          ECR_IMAGE: ${{ secrets.ECRIMAGE }}
-        run: |
-          aws ssm send-command \
-            --instance-ids "i-03243fc6132d734e3" \
-            --document-name "AWS-RunShellScript" \
-            --parameters "commands=[
-              \"aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 162403021035.dkr.ecr.us-east-1.amazonaws.com\",
-              \"docker pull $ECR_IMAGE\",
-              \"docker rm -f cinevault-container || true\",
-              \"docker run -d -p 5000:5000 --name cinevault-container $ECR_IMAGE\"
-            ]" \
-            --region us-east-1
+```
+.github/workflows/ci.yml
 ```
 
+
+### 🔐 Configure GitHub Secrets
+
+Before running the GitHub Actions pipeline, configure the required AWS credentials and ECR image URI as GitHub Secrets.
+
+Go to:
+
+```text
+GitHub Repository → Settings → Secrets and variables → Actions
+```
+
+Add the following repository secrets:
+
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `ECRIMAGE`
+
+These secrets are used by the workflow to authenticate with AWS, push the Docker image to Amazon ECR, and deploy the image through AWS Systems Manager.
+
+> ⚠️ Never commit AWS access keys directly into the repository or workflow file.
 ---
+
 
 # 8️⃣ Amazon ECR
 
@@ -439,15 +370,7 @@ Docker Push
 Amazon ECR
 ```
 
-GitHub Secrets are used for AWS credentials.
-
-Secrets used:
-
-```text
-AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY
-ECRIMAGE
-```
+GitHub Actions uses the configured GitHub Secrets to authenticate with AWS and push the image to ECR.
 
 ⚠️ AWS secret keys should never be committed to GitHub.
 
