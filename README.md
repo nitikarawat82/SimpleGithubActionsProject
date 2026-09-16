@@ -1,8 +1,21 @@
 # 🎬 CineVault — DevOps CI/CD Project
 
-CineVault is a simple movie streaming web application built with **Python Flask**.
+CineVault is a simple movie streaming web application built with Python Flask,
+but the main purpose of this project is to demonstrate how a web application
+can be **containerized, tested, deployed, and continuously updated on AWS
+using a complete CI/CD pipeline.**
 
-The main purpose of this project is to demonstrate a complete **DevOps CI/CD deployment workflow** using GitHub Actions, Docker, AWS ECR, AWS EC2 and AWS Systems Manager.
+Instead of manually deploying the application every time a change is made,
+this project automates the deployment flow:
+
+**Code Push → Automated Testing → Docker Build → Amazon ECR → AWS EC2 → Live Website**
+
+With every new change pushed to GitHub, GitHub Actions automatically runs
+the tests, builds a new Docker image, pushes it to Amazon ECR, and deploys
+the latest version to an EC2 server using AWS Systems Manager.
+
+The final result is a **running CineVault website hosted on AWS**, with an
+automated deployment pipeline behind it.
 
 ---
 
@@ -29,31 +42,6 @@ Docker Container
    ↓
 🌐 Live CineVault
 ```
-
----
-
-## 🛠️ Technologies Used
-
-**Application**
-- Python
-- Flask
-- HTML
-- CSS
-- JavaScript
-
-**DevOps**
-- Git
-- GitHub
-- GitHub Actions
-- Docker
-- Pytest
-
-**AWS**
-- Amazon ECR
-- Amazon EC2
-- AWS Systems Manager (SSM)
-- AWS IAM
-- AWS CLI
 
 ---
 
@@ -107,6 +95,23 @@ app.run(host="0.0.0.0", port=5000, debug=True)
 ```
 
 `0.0.0.0` allows the application to accept connections from outside the container.
+
+### 📌 Get the Source Code
+
+You can fork my GitHub repository and use the complete CineVault source code
+to follow along with the deployment steps.
+
+👉 Fork the CineVault Repository
+
+After forking the repository, you can clone it to your local machine:
+
+```
+git clone https://github.com/<YOUR-USERNAME>/SimpleGithubActionsProject.git
+cd SimpleGithubActionsProject
+```
+
+Now you have the complete application code and can continue with the Docker,
+CI/CD and AWS deployment steps.
 
 ---
 
@@ -249,6 +254,7 @@ Expected result:
 ```text
 3 passed
 ```
+<img width="1082" height="226" alt="image" src="https://github.com/user-attachments/assets/5b3e43e1-1764-4cac-8ec8-738eb875743c" />
 
 ---
 
@@ -542,6 +548,8 @@ The application is then available through the EC2 public IP.
                  🌐 CineVault
 ```
 
+<img width="1660" height="783" alt="Screenshot 2026-09-16 173955" src="https://github.com/user-attachments/assets/3529ad36-a03a-4ec3-a95c-b3729f6ebbb8" />
+
 ---
 
 # 🔐 IAM Permission Flow
@@ -612,7 +620,19 @@ Run new container on EC2
 Updated website
 ```
 
+<img width="1852" height="992" alt="image" src="https://github.com/user-attachments/assets/26a49d0a-a34e-45c3-ad2c-cd0b2c8b70d1" />
+<br>
+
+<br>
+
 The updated content appeared on the live CineVault website, confirming that the complete CI/CD pipeline was working.
+
+<br>
+<br>
+
+
+<img width="1712" height="842" alt="Screenshot 2026-09-16 183442" src="https://github.com/user-attachments/assets/ad5a3b79-7fd0-401e-bbc5-68ee6c5b55a5" />
+
 
 ---
 
