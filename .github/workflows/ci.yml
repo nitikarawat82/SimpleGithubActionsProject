@@ -79,7 +79,7 @@ jobs:
             echo "✅ ECR_IMAGE is available"
           fi
 
-      # Deploy the latest Docker image to EC2 using AWS Systems Manager
+        # Deploy the latest Docker image to EC2 using AWS Systems Manager
       - name: Deploy to EC2
         env:
           ECR_IMAGE: ${{ secrets.ECRIMAGE }}
@@ -88,6 +88,7 @@ jobs:
             --instance-ids "i-03243fc6132d734e3" \
             --document-name "AWS-RunShellScript" \
             --parameters "commands=[
+              \"aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 162403021035.dkr.ecr.us-east-1.amazonaws.com\",
               \"docker pull $ECR_IMAGE\",
               \"docker rm -f cinevault-container || true\",
               \"docker run -d -p 5000:5000 --name cinevault-container $ECR_IMAGE\"
