@@ -67,8 +67,8 @@ jobs:
           docker tag cinevault:latest ${{ secrets.ECRIMAGE }}
           docker push ${{ secrets.ECRIMAGE }}
 
-      # Deploy the latest Docker image to EC2 using AWS Systems Manager
-            # Deploy the latest Docker image to EC2 using AWS Systems Manager
+      
+       # Deploy the latest Docker image to EC2 using AWS Systems Manager
       - name: Deploy to EC2
         env:
           ECR_IMAGE: ${{ secrets.ECR_IMAGE }}
@@ -82,5 +82,4 @@ jobs:
               \"docker run -d -p 5000:5000 --name cinevault-container $ECR_IMAGE\"
             ]" \
             --region us-east-1
-
         
