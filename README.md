@@ -309,7 +309,6 @@ The complete workflow configuration is available in the repository:
 .github/workflows/ci.yml
 ```
 
-
 ### 🔐 Configure GitHub Secrets
 
 Before running the GitHub Actions pipeline, configure the required AWS credentials and ECR image URI as GitHub Secrets.
@@ -331,8 +330,45 @@ These secrets are used by the workflow to authenticate with AWS, push the Docker
 > ⚠️ Never commit AWS access keys directly into the repository or workflow file.
 ---
 
+# 8️⃣ IAM User & AWS Access Keys
 
-# 8️⃣ Amazon ECR
+GitHub Actions needs permission to access AWS services, so a dedicated IAM user was created for the CI/CD pipeline.
+
+### Create IAM User
+
+Go to:
+
+AWS Console → IAM → Users → Create user
+
+Create a user for GitHub Actions.
+
+Example:
+
+`cinevault-github-actions-iamUser`
+
+Attach the required permissions for:
+
+- Amazon ECR
+- AWS Systems Manager (SSM)
+
+### 🔑 Create Access Keys
+
+After creating the IAM user:
+
+IAM → Users → `cinevault-github-actions-iamUser` → Security credentials → Access keys → Create access key
+
+Create an access key for the GitHub Actions use case.
+
+AWS provides:
+
+- `Access Key ID`
+- `Secret Access Key`
+
+These credentials are used by GitHub Actions to authenticate with AWS.
+
+> ⚠️ Never commit or share the Secret Access Key in the repository.
+
+# 9️⃣ Amazon ECR
 
 **Amazon ECR (Elastic Container Registry)** is used to store the Docker image in AWS.
 
@@ -354,7 +390,7 @@ ECR acts as the central storage location for the Docker image.
 
 ---
 
-# 9️⃣ Push Docker Image to ECR
+# 🔟 Push Docker Image to ECR
 
 After the Docker image is built, GitHub Actions logs in to AWS and pushes the image to ECR.
 
@@ -372,11 +408,19 @@ Amazon ECR
 
 GitHub Actions uses the configured GitHub Secrets to authenticate with AWS and push the image to ECR.
 
+Secrets used:
+
+```text
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+ECRIMAGE
+```
+
 ⚠️ AWS secret keys should never be committed to GitHub.
 
 ---
 
-# 🔟 Create and Configure EC2
+# 1️⃣1️⃣ Create and Configure EC2
 
 An **Ubuntu Server EC2** instance was created to run CineVault.
 
@@ -390,11 +434,21 @@ sudo systemctl enable --now docker
 
 AWS CLI was also installed on EC2.
 
+### 🔐 Security Group
+
+Allow inbound traffic:
+
+- Type: Custom TCP
+- Port: `5000`
+- Source: `0.0.0.0/0`
+
+This allows the CineVault application to be accessed through the EC2 public IP.
+
 The EC2 security group allows TCP traffic on port **5000** so the application can be accessed.
 
 ---
 
-# 1️⃣1️⃣ EC2 IAM Role
+# 1️⃣2️⃣ EC2 IAM Role
 
 An IAM role was attached to the EC2 instance.
 
@@ -403,17 +457,19 @@ Important permissions include:
 ```text
 AmazonSSMManagedInstanceCore
 AmazonEC2ContainerRegistryReadOnly
+CloudWatchAgentServerPolicy
 ```
 
 These permissions allow EC2 to:
 
 - Connect to AWS Systems Manager
-- Access ECR
+- Access Amazon ECR
 - Pull the Docker image
+- Send monitoring information to CloudWatch
 
 ---
 
-# 1️⃣2️⃣ AWS Systems Manager (SSM)
+# 1️⃣3️⃣ AWS Systems Manager (SSM)
 
 AWS Systems Manager is used to execute deployment commands on EC2 remotely.
 
@@ -425,15 +481,13 @@ GitHub Actions
 AWS SSM
       ↓
 EC2
-      ↓
-Run deployment commands
 ```
 
-This makes the deployment automated.
+This allows GitHub Actions to trigger the deployment automatically.
 
 ---
 
-# 1️⃣3️⃣ Authenticate Docker with ECR
+# 1️⃣4️⃣ Authenticate Docker with ECR
 
 EC2 must authenticate Docker with ECR before pulling the image.
 
@@ -451,7 +505,7 @@ IAM allows the EC2 instance to access ECR.
 
 ---
 
-# 1️⃣4️⃣ Pull the Latest Image
+# 1️⃣5️⃣ Pull the Latest Image
 
 EC2 pulls the image from ECR:
 
@@ -471,7 +525,7 @@ EC2 Docker
 
 ---
 
-# 1️⃣5️⃣ Remove the Previous Container
+# 1️⃣6️⃣ Remove the Previous Container
 
 The old CineVault container is removed:
 
@@ -483,7 +537,7 @@ The `|| true` prevents the command from failing if the container does not alread
 
 ---
 
-# 1️⃣6️⃣ Run the New Container
+# 1️⃣7️⃣ Run the New Container
 
 The latest image is started on EC2:
 
