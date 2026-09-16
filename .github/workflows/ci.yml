@@ -67,9 +67,10 @@ jobs:
           docker tag cinevault:latest ${{ secrets.ECRIMAGE }}
           docker push ${{ secrets.ECRIMAGE }}
           
+           # Verify that the ECR image secret is available
       - name: Verify ECR Image Secret
         env:
-          ECR_IMAGE: ${{ secrets.ECR_IMAGE }}
+          ECR_IMAGE: ${{ secrets.ECRIMAGE }}
         run: |
           if [ -z "$ECR_IMAGE" ]; then
             echo "❌ ECR_IMAGE is EMPTY"
@@ -77,11 +78,11 @@ jobs:
           else
             echo "✅ ECR_IMAGE is available"
           fi
-      
-       # Deploy the latest Docker image to EC2 using AWS Systems Manager
+
+      # Deploy the latest Docker image to EC2 using AWS Systems Manager
       - name: Deploy to EC2
         env:
-          ECR_IMAGE: ${{ secrets.ECR_IMAGE }}
+          ECR_IMAGE: ${{ secrets.ECRIMAGE }}
         run: |
           aws ssm send-command \
             --instance-ids "i-03243fc6132d734e3" \
@@ -92,4 +93,3 @@ jobs:
               \"docker run -d -p 5000:5000 --name cinevault-container $ECR_IMAGE\"
             ]" \
             --region us-east-1
-        
